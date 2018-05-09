@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>截图Demo</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="./js/animate.min.css">
+    <link rel="stylesheet" href="./js/swiper-3.4.2.min.css">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/dragScript.js"></script>
+    <script src="js/swiper-3.4.2.min.js"></script>
+    <script src="js/swiper.animate1.0.2.min.js"></script>
+    <!--<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>-->
+
+    <script src="js/main.js"></script>
+    <script src="./js/html2canvas.js"></script>
+    <style>
+        body{
+            margin:0;
+            padding:0;
+            overflow: hidden;
+            position: relative;
+            top:0;
+            left:0;
+
+        }
+        body img{
+            top:0;
+            left:0;
+            position: absolute;
+            width:100vw;
+            height:100vh;
+        }
+
+        .d1{
+            width:100vw ;
+            position: absolute;
+
+            /*border:1px solid red;*/
+            height:100vh;
+        }
+        label{
+            top: 18vh;
+            position: absolute;
+            width: 100vw;
+            height: 36vh;
+        }
+        .upload{
+            width:100vw;
+            height:auto;
+        }
+        .show{
+            position: absolute;
+            top:0;
+            left:0;
+            width:100vw;
+            height:auto;
+            display: none;
+        }
+        button{
+            position: absolute;
+            z-index: 1;
+            top: 68vh;
+            left: 38vw;
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            border: 1px solid #2e6da4;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #337ab7;
+        }
+    </style>
+</head>
+<body>
+<div id="view" style="position:absolute; width: 100vw;height: 100vh; ">
+
+
+<!--<div id="fpMusic" >-->
+    <!--<audio  src="./img/bg.mp3" preload loop="loop" id="fpMusicAudio"></audio>-->
+
+    <!--<div id="fpMusicPlay">-->
+        <!--<div id="fpMusicPlayBtn"></div>-->
+    <!--</div>-->
+<!--</div>-->
+    <div class="init_img" style="position:absolute; width: 100vw;height: 100vh; z-index:-1;">
+        <img  src="" alt="" class="upload draggable"  id="img1">
+</div>
+
+<img src="./img/1.png" alt="" class="draggin_bg" >
+<img src="./img/2.png" alt="" class="draggin_bg2" >
+<div class="draggable d1"  id="d1" >
+
+</div>
+<div class="upload_area">
+    <label for="upload_file"></label>
+    <input type="file" accept="image/*" style="display: none" id="upload_file">
+</div>
+
+    <div class="show_img">
+        <img src="" alt="" class="show" style="width: 100vw;height: 100vh;">
+    </div>
+
+
+    <button style="position: absolute; z-index:1;">生成图片</button>
+
+
+</div>
+
+
+<script>
+    $(function () {
+        $('#upload_file')[0].addEventListener("change",function(){
+            $('.draggin_bg2').css('display','none');
+            var reader = new FileReader();
+            reader.readAsDataURL( $('#upload_file')[0].files[0]);//发起异步请求
+            reader.onload = function(){
+                //读取完成后，数据保存在对象的result属性中
+                $('#upload_file')[0].style.display='none';
+                document.querySelector(".upload").src=this.result;
+                document.querySelector(".upload_area").style.display='none';
+            }
+        });
+
+$('button').click(function () {
+    zz();
+})
+
+    })
+
+    function zz() {
+        $("button")[0].style.display="none";
+        html2canvas(document.querySelector('#view')).then(function(canvas) {
+
+            document.body.appendChild(canvas);
+            $("#d1")[0].style.display="none";
+            $(".init_img")[0].style.display="none";
+//            $("#view")[0].style.display="none";
+            document.querySelector(".show").src=canvas.toDataURL();
+
+            canvas.style.display='none';
+//            canvas.height=window.body.innerHeight;
+            //canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
+            $(".show")[0].style.display="block";
+//            $(".show")[0].style.zIndex="9999";
+
+
+        })
+
+
+    }
+
+</script>
+</body>
+</html>
